@@ -116,7 +116,7 @@ python preprocess/extract_sequence.py
 Train the structure prediction module:
 
 ```bash
-python experiments/train.py experiment.task=csp experiment.name=<exp_name>
+python -m experiments.train experiment.task=csp experiment.name=<exp_name>
 ```
 
 ### Generation
@@ -125,13 +125,13 @@ For the generation task, train both the building block generator and the structu
 1. **Train the MOF sequence generator**: This model learns to generate MOF sequences. The default configuration in `configs/base_seq.yaml` trains an unconditional sequence generator; you can train it to condition on CO2 working capacity by setting `model.conditional=true`. If you encounter OOM errors, reduce `data.loader.max_tokens` and/or specify `data.loader.max_batch_size`. Note: `model.max_seq_len` is a dummy, as rotary positional embedding is used.
 
 ```bash
-python experiments/train_seq.py experiment.name=<exp_name> model.conditional=false # Set to true for conditional generator
+python -m experiments.train_seq experiment.name=<exp_name> model.conditional=false # Set to true for conditional generator
 ```
 
 2. **Train the structure prediction module**: This model predicts the assembled structure given ground-truth building blocks. See `configs/base.yaml` for details. Dynamic batching is used; if you encounter OOM errors, try reducing `data.loader.dynamic.max_num_atoms` and/or specify `data.loader.dynamic.max_batch_size`.
 
    ```bash
-   python experiments/train.py experiment.task=gen experiment.name=<exp_name>
+   python -m experiments.train experiment.task=gen experiment.name=<exp_name>
    ```
 
 ## Generate MOF structures
@@ -160,7 +160,7 @@ logs/
 To generate the MOF structures for the test set, run the following code. You may specify the number of samples to generate per test sample. For more details, look into `configs/inference.yaml`. 
 
 ```bash
-python experiments/predict.py \
+python -m experiments.predict \
     inference.task=csp \
     inference.ckpt_path=<path/to/ckpt.pt> \ # default to null
     inference.num_samples=<num_samples> \   # default to 1
@@ -174,12 +174,12 @@ For generation, we (1) generate MOF sequences with trained MOF sequence generato
 
 ```bash
 # 1. Generate MOF sequences (check `configs/inference_seq.yaml` for details.)
-python experiments/predict_seq.py \
+python -m experiments.predict_seq \
     inference.ckpt_path=<path/to/ckpt.pt> \ # default to null
     inference.total_samples=<num_samples> # default to 10000
 
 # 2. Predict MOF structures (check `configs/inference.yaml` for details.)
-python experiments/predict.py \
+python -m experiments.predict \
     inference.task=gen \
     inference.ckpt_path=<path/to/ckpt.pt> \ # default to null
     inference.gen.metal_lib_path=<path/to/metal_lib_train.pkl> \ # for initializing metal structures 
@@ -197,7 +197,7 @@ All codes relevant to evaluation are under `evaluation/` directory.
 We compute the match rate and RMSE between the predicted and ground-truth structures. To do this, run the following script:
 
 ```bash
-python evaluation/rmsd.py \
+python -m evaluation.rmsd \
     --save_pt </path/to/predictions_*.pt> \
     --num_samples <num_samples>
 ```
@@ -215,7 +215,7 @@ We evaluate the generated MOFs in two stages: first at the sequence level, then 
 **Step 1: Evaluate VNU for generated sequences**
 
 ```bash
-python evaluation/valid_seq.py \
+python -m evaluation.valid_seq \
     --generated_json <path/to/generated/sequence.json> \
     --train_json <data/seqs/mof_sequence_train.json> \
     --bb_lib_dir <data/bb_lib>
@@ -235,7 +235,7 @@ python evaluation/valid_seq.py \
 
 2. **Evaluate VNU for structures:**
    ```bash
-   python evaluation/valid.py \
+   python -m evaluation.valid \
        --cif_path <path/to/cif/files/*.cif> \
        --csv_path <path/to/sequence/vnu/results.csv>
    ```
@@ -249,7 +249,7 @@ python evaluation/valid_seq.py \
 To compute properties of the generated structures using `zeo++`, run:
 
 ```bash
-python evaluation/property.py \
+python -m evaluation.property \
     --cif_dir <path/to/cif/dir> \
     --num_cpus <num_cpus>
 ```
