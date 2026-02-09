@@ -56,7 +56,17 @@ There are two options for preparing the dataset:
 **Note:** If you want to build your own dataset from raw `.cif` files, start by processing them with the scripts provided in [MOFDiff]((https://github.com/microsoft/MOFDiff)), then apply our preprocessing pipeline. 
 
 ### Option 1: Use Preprocessed Data
-Download the preprocessed datasets (and the checkpoints) from [zenodo](https://zenodo.org/records/17163237). After unzipping, the directory structure should look as follows:
+You can download preprocessed data from either source:
+
+1. **Zenodo**: [MOFFlow-2 preprocessed release](https://zenodo.org/records/17163237)
+2. **Hugging Face (dataset repo)**: [lkny123/mofflow2-data](https://huggingface.co/datasets/lkny123/mofflow2-data)
+
+If you use Hugging Face, you can download with:
+```bash
+hf download lkny123/mofflow2-data --repo-type dataset --local-dir .
+```
+
+After extracting files into your project `data/` directory, the structure should look as follows:
 ```
 data/                          <- Project dataset directory
 ├── lmdb/                      <- Preprocessed dataset for training structure prediction module
@@ -136,7 +146,17 @@ python -m experiments.train_seq experiment.name=<exp_name> model.conditional=fal
 
 ## Generate MOF structures
 
-To generate MOF structures using pretrained checkpoints (available on [zenodo](https://zenodo.org/records/17163237)), place the checkpoint file (`*.pt`) and its corresponding configuration file (`config.yaml`) in the same directory. If you trained your own model, the `config.yaml` file will have been created automatically.
+To generate MOF structures with pretrained checkpoints, you can download from either source:
+
+1. **Zenodo**: [MOFFlow-2 preprocessed release](https://zenodo.org/records/17163237)
+2. **Hugging Face (model repo)**: [lkny123/mofflow2-ckpt](https://huggingface.co/lkny123/mofflow2-ckpt)
+
+If you use Hugging Face, you can download with:
+```bash
+hf download lkny123/mofflow2-ckpt --repo-type model --local-dir .
+```
+
+Place the checkpoint file (`*.pt` or `*.ckpt`) and its corresponding configuration file (`config.yaml`) in the same directory. If you downloaded archive files (`*.tar.gz`) from Hugging Face, extract them first so the checkpoint and `config.yaml` are colocated. If you trained your own model, the `config.yaml` file will have been created automatically.
 ```
 # Example directory layout for unzipped pretrained checkpoints:
 logs/
