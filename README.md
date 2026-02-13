@@ -59,11 +59,11 @@ There are two options for preparing the dataset:
 You can download preprocessed data from either source:
 
 1. **Zenodo**: [MOFFlow-2 preprocessed release](https://zenodo.org/records/17163237)
-2. **Hugging Face (dataset repo)**: [lkny123/mofflow2-data](https://huggingface.co/datasets/lkny123/mofflow2-data)
+2. **Hugging Face (dataset repo)**: [nayoung10/mofflow2-data](https://huggingface.co/datasets/nayoung10/mofflow2-data)
 
 If you use Hugging Face, you can download with:
 ```bash
-hf download lkny123/mofflow2-data --repo-type dataset --local-dir .
+hf download nayoung10/mofflow2-data --repo-type dataset --local-dir .
 ```
 
 After extracting files into your project `data/` directory, the structure should look as follows:
@@ -149,11 +149,11 @@ python -m experiments.train_seq experiment.name=<exp_name> model.conditional=fal
 To generate MOF structures with pretrained checkpoints, you can download from either source:
 
 1. **Zenodo**: [MOFFlow-2 preprocessed release](https://zenodo.org/records/17163237)
-2. **Hugging Face (model repo)**: [lkny123/mofflow2-ckpt](https://huggingface.co/lkny123/mofflow2-ckpt)
+2. **Hugging Face (model repo)**: [nayoung10/mofflow2-ckpt](https://huggingface.co/nayoung10/mofflow2-ckpt)
 
 If you use Hugging Face, you can download with:
 ```bash
-hf download lkny123/mofflow2-ckpt --repo-type model --local-dir .
+hf download nayoung10/mofflow2-ckpt --repo-type model --local-dir .
 ```
 
 Place the checkpoint file (`*.pt` or `*.ckpt`) and its corresponding configuration file (`config.yaml`) in the same directory. If you downloaded archive files (`*.tar.gz`) from Hugging Face, extract them first so the checkpoint and `config.yaml` are colocated. If you trained your own model, the `config.yaml` file will have been created automatically.
